@@ -1,5 +1,7 @@
-package com.officehub.officehubserver.OfficeHubServer;
+package com.officehub.officehubserver.OfficeHubServer.controller;
 
+import com.officehub.officehubserver.OfficeHubServer.UserNotFoundException;
+import com.officehub.officehubserver.OfficeHubServer.dto.UserInfo;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,4 +19,5 @@ public class UserInfoController {
             throw new UserNotFoundException();
         }
     }
+
 }

@@ -1,4 +1,4 @@
-package com.officehub.officehubserver.OfficeHubServer;
+package com.officehub.officehubserver.OfficeHubServer.dto;
 
 public class UserInfo {
     private String name;
