@@ -2,6 +2,7 @@
 
 ### 빌드툴 설치(maven wrapper)  
 ```shell
+cd 해당 디렉토리 위치
 mvn -N io.takari:maven:wrapper
 ```
 
