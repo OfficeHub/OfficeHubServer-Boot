@@ -1,6 +1,5 @@
 package com.officehub.officehubserver.OfficeHubServer.controller;
 
-import com.officehub.officehubserver.OfficeHubServer.UserNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.dto.UserInfo;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -15,13 +14,13 @@ public class UserInfoController {
     @GetMapping("/users")
     public UserInfo getUserInfo(
             @Parameter(description = "대상 유저의 id")
-            @RequestParam(value = "id", defaultValue = "0") int id) {
+            @RequestParam(value = "id", defaultValue = "1") int id) throws Exception {
         if (id == 0) {
-            return new UserInfo("zimin", "wlals822@naver.com");
+            return new UserInfo(0, "gildong.hong", "정보전략부", "010-1234-5678", "안녕하세요. 처음입니다.", "여기는 사진 경로");
         } else if (id == 1) {
-            return new UserInfo("con", "con@kako.com");
+            return new UserInfo(1, "gildong.kim", "영업부", "010-1111-2222", "안녕하세요. 처음입니다2.", "여기는 사진 경로2");
         } else {
-            throw new UserNotFoundException();
+            throw new Exception();
         }
     }
 
