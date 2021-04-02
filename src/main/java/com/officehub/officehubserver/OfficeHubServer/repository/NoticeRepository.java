@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface NoticeRepository {
 
-    List<NoticeDto> getNotices(int offset, int size) throws ParseException;
+    List<NoticeDto> getNotices(int offset, int size);
+    NoticeDto getNotice(int noticeId);
 }
