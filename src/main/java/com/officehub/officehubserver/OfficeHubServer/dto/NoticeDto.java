@@ -1,10 +1,13 @@
 package com.officehub.officehubserver.OfficeHubServer.dto;
 
+import org.apache.ibatis.type.Alias;
+
 import java.sql.Timestamp;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@Alias("notice") // mybatis 별칭
 public class NoticeDto {
     private int noticeId;
     private String title;
