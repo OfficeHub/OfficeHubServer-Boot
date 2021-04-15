@@ -84,7 +84,7 @@ public class TestRepository implements NoticeRepository{
         return result;
     }
 
-    // db연결하 ClassNotFoundException
+    // db연결시 ClassNotFoundException
     @Override
     public NoticeDto getNotice(int noticeId) {
         NoticeDto ndto1 = new NoticeDto();
