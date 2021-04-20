@@ -154,5 +154,6 @@
 				</executions>
 			</plugin>
 		</plugins>
+		<finalName>office-hub-server</finalName>
 	</build>
 </project>
