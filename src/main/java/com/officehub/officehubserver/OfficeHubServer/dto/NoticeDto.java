@@ -13,7 +13,7 @@ public class NoticeDto {
     private String title;
     private String content;
     private int writerId;
-    private Date writeDay;
+    private Date writtenDay;
 
     public int getNoticeId() {
         return noticeId;
@@ -47,12 +47,12 @@ public class NoticeDto {
         this.writerId = writerId;
     }
 
-    public Date getWriteDay() {
-        return writeDay;
+    public Date getWrittenDay() {
+        return writtenDay;
     }
 
-    public void setWriteDay(Date writeDay) {
-        this.writeDay = writeDay;
+    public void setWrittenDay(Date writtenDay) {
+        this.writtenDay = writtenDay;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class NoticeDto {
                 ", title='" + title + '\'' +
                 ", content='" + content + '\'' +
                 ", writerId=" + writerId +
-                ", writeDay=" + writeDay +
+                ", writtenDay=" + writtenDay +
                 '}';
     }
 }

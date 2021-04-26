@@ -23,8 +23,8 @@ public class NoticeController {
         this.noticeService = noticeService;
     }
 
-    /*
-    공지 목록 조회 api Json 응답
+    /**
+     * 공지 목록 내부 클래스
      */
     @Data
     public static class JsonNoticeList{
@@ -37,9 +37,9 @@ public class NoticeController {
 
     /**
      * Test 공지 목록 출력
-     * @param offset
-     * @param size
-     * @return
+     * @param offset 보여질 공지 목록 첫 index
+     * @param size 보여질 공지 개수
+     * @return 공지 목록 내부 객체(type: JsonNoticeList)
      * @throws ParseException
      */
     @ApiOperation(value = "임시 공지목록 출력", notes = "총 테스트 데이터 : 5개")
@@ -55,8 +55,8 @@ public class NoticeController {
 
     /**
      * Test 공지 상세 정보 출력
-     * @param noticeId
-     * @return
+     * @param noticeId 공지 PK
+     * @return 공지 객체(type: NoticeDto)
      */
     @ApiOperation(value = "임시 공지상세정보 출력", notes = "총 테스트 데이터 : 1개")
     @GetMapping("/test/notice")
@@ -69,9 +69,9 @@ public class NoticeController {
 
     /**
      * 공지 목록 출력
-     * @param offset
-     * @param size
-     * @return
+     * @param offset 보여질 공지 목록 첫 index
+     * @param size 보여질 공지 개수
+     * @return 공지 목록 내부 객체(type: JsonNoticeList)
      * @throws ParseException
      */
     @ApiOperation(value = "공지목록 출력")
@@ -87,8 +87,8 @@ public class NoticeController {
 
     /**
      * 공지사항 상세보기
-     * @param noticeId
-     * @return
+     * @param noticeId 공지 PK
+     * @return 공지 객체(type: NoticeDto)
      */
     @GetMapping("/notice/{noticeId}")
     public NoticeDto getNotice(@PathVariable(value = "noticeId") int noticeId) {
@@ -97,25 +97,25 @@ public class NoticeController {
 
     /**
      * 공지사항 추가
-     * @param dto
+     * @param noticeDto (type: NoticeDto)
      */
     @PostMapping("/notice")
-    public void insertNotice(@RequestBody NoticeDto dto){
-        noticeService.insertNotice(dto);
+    public void insertNotice(@RequestBody NoticeDto noticeDto){
+        noticeService.insertNotice(noticeDto);
     }
 
     /**
      * 공지사항 수정
-     * @param dto
+     * @param noticeDto (type: NoticeDto)
      */
     @PutMapping("/notice")
-    public void updateNotice(@RequestBody NoticeDto dto){
-        noticeService.updateNotice(dto);
+    public void updateNotice(@RequestBody NoticeDto noticeDto){
+        noticeService.updateNotice(noticeDto);
     }
 
     /**
      * 공지사항 삭제
-     * @param noticeId
+     * @param noticeId 공지 PK
      */
     @DeleteMapping("/notice/{noticeId}")
     public void deleteNotice(@PathVariable(value = "noticeId") int noticeId){
