@@ -9,4 +9,13 @@
     <select id="getNoticeList" parameterType="hashmap" resultType="notice">
         select * from notice order by noticeId desc limit #{offset}, #{size}
     </select>
+    <insert id="insertNotice" parameterType="notice">
+        insert into notice (writerId, title, content, writeDay) values (#{writerId}, #{title}, #{content}, #{writeDay})
+    </insert>
+    <update id="updateNotice" parameterType="notice">
+        update notice set title=#{title}, content=#{content} where noticeId=#{noticeId}
+    </update>
+    <delete id="deleteNotice" parameterType="int">
+        delete from notice where noticeId=#{noticeId}
+    </delete>
 </mapper>

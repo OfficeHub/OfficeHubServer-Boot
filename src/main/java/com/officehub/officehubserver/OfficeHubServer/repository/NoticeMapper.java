@@ -12,4 +12,7 @@ import java.util.Map;
 public interface NoticeMapper {
     List<NoticeDto> getNoticeList(Map<String, Integer> map);
     NoticeDto getNoticeById(int noticeId);
+    void insertNotice(NoticeDto dto);
+    void updateNotice(NoticeDto dto);
+    void deleteNotice(int noticeId);
 }
