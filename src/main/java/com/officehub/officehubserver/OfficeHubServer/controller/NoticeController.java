@@ -19,7 +19,7 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    public NoticeController(NoticeServiceImpl noticeService) {
+    public NoticeController(NoticeService noticeService) {
         this.noticeService = noticeService;
     }
 
