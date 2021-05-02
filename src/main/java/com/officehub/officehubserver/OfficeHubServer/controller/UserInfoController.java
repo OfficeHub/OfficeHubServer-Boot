@@ -21,7 +21,7 @@ public class UserInfoController {
 	
 	
 	@Operation(summary = "id 기준으로 유저의 정보를 쿼리합니다.")
-	 @GetMapping("/userinfo")
+	@GetMapping("/userinfo")
     public UserInfo UserData(@ApiParam(value = "사번", example = "0")
     						 @RequestParam(value = "id")int id) {
         return userService.getUserInfo(id);
