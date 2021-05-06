@@ -10,7 +10,7 @@
         select * from notice order by noticeId desc limit #{offset}, #{size}
     </select>
     <insert id="insertNotice" parameterType="notice">
-        insert into notice (writerId, title, content, writeDay) values (#{writerId}, #{title}, #{content}, #{writeDay})
+        insert into notice (writerId, title, content, writtenDay) values (#{writerId}, #{title}, #{content}, #{writtenDay})
     </insert>
     <update id="updateNotice" parameterType="notice">
         update notice set title=#{title}, content=#{content} where noticeId=#{noticeId}
@@ -18,4 +18,7 @@
     <delete id="deleteNotice" parameterType="int">
         delete from notice where noticeId=#{noticeId}
     </delete>
+    <select id="getCountOfNotices" resultType="int">
+        select count(noticeId) from notice
+    </select>
 </mapper>

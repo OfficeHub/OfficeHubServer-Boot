@@ -15,4 +15,5 @@ public interface NoticeMapper {
     void insertNotice(NoticeDto dto);
     void updateNotice(NoticeDto dto);
     void deleteNotice(int noticeId);
+    int getCountOfNotices();
 }
