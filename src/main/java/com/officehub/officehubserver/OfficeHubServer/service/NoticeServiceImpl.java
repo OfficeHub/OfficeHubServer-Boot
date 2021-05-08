@@ -2,7 +2,6 @@ package com.officehub.officehubserver.OfficeHubServer.service;
 
 import com.officehub.officehubserver.OfficeHubServer.dto.NoticeDto;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
-import com.officehub.officehubserver.OfficeHubServer.exception.IndexOutOfRangeException;
 import com.officehub.officehubserver.OfficeHubServer.repository.NoticeMapper;
 import org.springframework.stereotype.Service;
 
@@ -19,12 +18,12 @@ public class NoticeServiceImpl implements NoticeService{
         this.noticeMapper = noticeMapper;
     }
 
-    public List<NoticeDto> getNoticeList(int offset, int size) throws IndexOutOfRangeException{
+    public List<NoticeDto> getNoticeList(int offset, int size) throws IndexOutOfBoundsException{
         int totalCountOfNotices = noticeMapper.getCountOfNotices();  // 공지사항 총 개수
 
-        // 출력하고자하는 결과가 db의 데이터들의 범위를 넘어갈시 에러 발생
         if (totalCountOfNotices <= offset) {
-            throw new IndexOutOfRangeException("index is out of range");
+            // 출력하고자하는 결과가 db의 데이터들의 범위를 넘어갈시 에러 발생
+            throw new IndexOutOfBoundsException("index is out of range");
         }
 
         Map<String, Integer> map = new HashMap<>();

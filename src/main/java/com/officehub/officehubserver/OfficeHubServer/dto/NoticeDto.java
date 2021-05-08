@@ -7,11 +7,11 @@ import java.util.Date;
 
 @Alias("notice") // mybatis 별칭
 public class NoticeDto {
-    private int noticeId;       // 공지사항 고유번호
-    private String title;       // 제목
-    private String content;     // 내용
-    private int writerId;       // 작성자 id
-    private LocalDate writtenDay;    // 작성일
+    private int noticeId;
+    private String title;
+    private String content;
+    private int writerId;
+    private LocalDate writtenDay;
 
     public int getNoticeId() {
         return noticeId;
