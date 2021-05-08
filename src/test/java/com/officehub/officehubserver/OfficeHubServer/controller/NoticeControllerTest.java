@@ -10,17 +10,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 
-@RunWith(MockitoJUnitRunner.class)
+//@RunWith(MockitoJUnitRunner.class)
 //@WebMvcTest(controllers = NoticeController.class)
 class NoticeControllerTest {
 
 //    @Autowired
 //    private MockMvc mvc;
 
-    @Autowired
-    private NoticeService noticeService;
-    @Autowired
-    private NoticeController noticeController;
+//    @Autowired
+//    private NoticeService noticeService;
+//    @Autowired
+//    private NoticeController noticeController;
 
 //    @Before
 //    public void setUp(){
@@ -43,11 +43,11 @@ class NoticeControllerTest {
         // 성공시
         // 요청한 id가 있을 때 공지사항 NoticeDto 객체 리턴
         // NoticeService.getNoticeById를 했을때 리턴값은 가짜 데이터
-        int noticeId = 1;
-        NoticeDto mockNotice = new NoticeDto();
-        mockNotice.setNoticeId(noticeId);
-        // given
-        given(noticeService.getNoticeById(noticeId)).willReturn(mockNotice);
+//        int noticeId = 1;
+//        NoticeDto mockNotice = new NoticeDto();
+//        mockNotice.setNoticeId(noticeId);
+//        // given
+//        given(noticeService.getNoticeById(noticeId)).willReturn(mockNotice);
 
         // when
 //        NoticeDto realNotice = noticeController.getNoticeById(noticeId);
