@@ -1,10 +1,12 @@
 package com.officehub.officehubserver.OfficeHubServer.dto;
 
+import javax.annotation.Nonnull;
+
 import org.apache.ibatis.type.Alias;
 
 @Alias("userinfo") // mybatis 별칭
 public class UserInfo {
-	private int id;
+	@Nonnull private int id;
     private String name;
     private String department;
     private String PhoneNum;    

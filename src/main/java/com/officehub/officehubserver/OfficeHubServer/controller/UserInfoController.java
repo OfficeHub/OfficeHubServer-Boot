@@ -7,7 +7,7 @@ import com.officehub.officehubserver.OfficeHubServer.service.UserInfoService;
 import io.swagger.annotations.ApiParam;
 import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController()
@@ -21,9 +21,9 @@ public class UserInfoController {
 	
 	
 	@Operation(summary = "id 기준으로 유저의 정보를 쿼리합니다.")
-	@GetMapping("/userinfo")
+	@GetMapping("/userinfo/{id}")
     public UserInfo UserData(@ApiParam(value = "사번", example = "0")
-    						 @RequestParam(value = "id")int id) {
+    						 @PathVariable(value = "id")int id) {
         return userService.getUserInfo(id);
     }
 	

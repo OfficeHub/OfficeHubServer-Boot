@@ -8,6 +8,10 @@ public class LoginDto {
 	private String userId;
 	private String password;
 	
+	public LoginDto() {
+		
+	}
+	
 	public LoginDto(int employeeId, String userId, String password) {
 		this.employeeId = employeeId;
 		this.userId = userId;
@@ -33,4 +37,16 @@ public class LoginDto {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+
+	//추후 경과를 보고 필요시 추가할 내용
+//	@Override
+//	public String toString() {
+//		return "LoginDto{" +
+//				", employeeId=" + employeeId +
+//				", userId=" + userId +
+//				", password=" + password +
+//				"}";
+//	}
+	
+	
 }

@@ -23,15 +23,12 @@ public class LoginService {
 	public LoginDto getLogin(String userId, String Password) {
 		Map<String, String> loginInfo = new HashMap<>();
 		loginInfo.put("userId", userId);
-		loginInfo.put("Password",Password);
-//		loginInfo.put("Password", CryptoAlgorithm.getEncrypt_test(Password));
+		loginInfo.put("Password", Password);
 		return loginMapper.getLogin(loginInfo);
 	}
 	
-	public LoginDto addLogin(int employeeId, String userId, String Password) {
-		Map<String, String> addLoginInfo = new HashMap<>();
-		addLoginInfo.put("userId", userId);
-		addLoginInfo.put("Password", CryptoAlgorithm.getEncrypt_test(Password));
-		return loginMapper.addLogin(addLoginInfo);
+	public void addLogin(LoginDto dto) {
+		String cryptpwd = CryptoAlgorithm.getEncrypt_test(dto.getPassword());
+		loginMapper.addLogin(dto.getEmployeeId(), dto.getUserId(), cryptpwd);
 	}
 }

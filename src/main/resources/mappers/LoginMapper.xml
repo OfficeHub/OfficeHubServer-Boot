@@ -3,10 +3,10 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.officehub.officehubserver.OfficeHubServer.repository.LoginMapper">
-    <select id="getLogin" parameterType="hashmap" resultType="Login">
+    <select id="getLogin" parameterType="Hashmap" resultType="Login">
         select * from login where userId = #{userId} and password = #{Password}
     </select>
-    <select id="addLogin" parameterType="hashmap" resultType="Login">
-        insert into login (employeeId, userId, password) VALUES ('2', #{userId}, #{Password});
-    </select>
+    <insert id="addLogin" parameterType="Login">
+        insert into login (employeeId, userId, password) VALUES (#{employeeId}, #{userId}, #{password});
+    </insert>
 </mapper>
