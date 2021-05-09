@@ -1,8 +1,6 @@
 package com.officehub.officehubserver.OfficeHubServer.controller;
 
-import com.officehub.officehubserver.OfficeHubServer.dto.ApiResult;
-import com.officehub.officehubserver.OfficeHubServer.dto.JsonNoticeListDto;
-import com.officehub.officehubserver.OfficeHubServer.dto.NoticeDto;
+import com.officehub.officehubserver.OfficeHubServer.dto.*;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.service.NoticeService;
 import com.officehub.officehubserver.OfficeHubServer.service.NoticeServiceImpl;
@@ -51,34 +49,34 @@ public class NoticeController {
      */
     @GetMapping("/notice/{noticeId}")
     public ApiResult<?> getNoticeById(@PathVariable(value = "noticeId") int noticeId) {
-        NoticeDto ndto;
+        NoticeDto nDto;
         try {
-            ndto = noticeService.getNoticeById(noticeId);
+            nDto = noticeService.getNoticeById(noticeId);
         } catch (IdNotFoundException e) {
             // 파라미터로 받은 id의 데이터가 없을시 에러 발생
             return ApiUtils.error(e.getMessage(), 400);
         }
-        return ApiUtils.success(ndto);
+        return ApiUtils.success(nDto);
     }
 
     /**
      * 공지사항 추가
-     * @param noticeDto (type: NoticeDto)
+     * @param dto (type: PostNoticeDto)
      */
     @PostMapping("/notice")
-    public ApiResult<?> insertNotice(@RequestBody NoticeDto noticeDto){
-        noticeService.insertNotice(noticeDto);
+    public ApiResult<?> insertNotice(@RequestBody PostNoticeDto dto){
+        noticeService.insertNotice(dto);
         return ApiUtils.success(null);
     }
 
     /**
      * 공지사항 수정
-     * @param noticeDto (type: NoticeDto)
+     * @param dto (type: PutNoticeDto)
      */
     @PutMapping("/notice")
-    public ApiResult<?> updateNotice(@RequestBody NoticeDto noticeDto){
+    public ApiResult<?> updateNotice(@RequestBody PutNoticeDto dto){
         try {
-            noticeService.updateNotice(noticeDto);
+            noticeService.updateNotice(dto);
         } catch (IdNotFoundException e) {
             // 파라미터로 받은 id의 데이터가 없을시 에러 발생
             return ApiUtils.error(e.getMessage(), 400);
