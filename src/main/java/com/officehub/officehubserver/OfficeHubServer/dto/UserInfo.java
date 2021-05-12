@@ -1,19 +1,22 @@
 package com.officehub.officehubserver.OfficeHubServer.dto;
 
+import javax.annotation.Nonnull;
+
+import org.apache.ibatis.type.Alias;
+
+@Alias("userinfo") // mybatis 별칭
 public class UserInfo {
-	private int id;
+	@Nonnull private int id;
     private String name;
     private String department;
-    private String PhoneNum;
-    private String Comment;
+    private String PhoneNum;    
     private String Photo;
 
-    public UserInfo(int id, String name, String department, String Phonenum, String Commnet, String Photo) {
+    public UserInfo(int id, String name, String department, String Phonenum, String Photo) {
     	this.id = id;
         this.name = name;
         this.department = department;
-        this.PhoneNum = Phonenum;
-        this.Comment = Commnet;
+        this.PhoneNum = Phonenum;        
         this.Photo = Photo;
     }
 
@@ -47,14 +50,6 @@ public class UserInfo {
 
 	public void setPhoto(String photo) {
 		Photo = photo;
-	}
-
-	public String getComment() {
-		return Comment;
-	}
-
-	public void setComment(String comment) {
-		Comment = comment;
 	}
 
 	public int getId() {
