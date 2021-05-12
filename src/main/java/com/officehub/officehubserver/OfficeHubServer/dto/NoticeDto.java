@@ -3,7 +3,6 @@ package com.officehub.officehubserver.OfficeHubServer.dto;
 import org.apache.ibatis.type.Alias;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Alias("notice") // mybatis 별칭
 public class NoticeDto {

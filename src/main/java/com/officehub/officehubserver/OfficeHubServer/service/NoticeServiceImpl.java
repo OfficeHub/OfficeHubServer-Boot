@@ -1,10 +1,14 @@
 package com.officehub.officehubserver.OfficeHubServer.service;
 
 import com.officehub.officehubserver.OfficeHubServer.dto.NoticeDto;
+import com.officehub.officehubserver.OfficeHubServer.dto.PostNoticeDto;
+import com.officehub.officehubserver.OfficeHubServer.dto.PutNoticeDto;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.repository.NoticeMapper;
+import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,13 +48,18 @@ public class NoticeServiceImpl implements NoticeService{
     }
 
     @Override
-    public void insertNotice(NoticeDto dto) {
-
-        noticeMapper.insertNotice(dto);
+    public void insertNotice(PostNoticeDto dto) {
+        NoticeDto noticeDto = new NoticeDto();
+        noticeDto.setTitle(dto.getTitle());
+        noticeDto.setContent(dto.getContent());
+        noticeDto.setWriterId(dto.getWriterId());
+        LocalDate localDate = LocalDate.now();
+        noticeDto.setWrittenDay(localDate);
+        noticeMapper.insertNotice(noticeDto);
     }
 
     @Override
-    public void updateNotice(NoticeDto dto) throws IdNotFoundException{
+    public void updateNotice(PutNoticeDto dto) throws IdNotFoundException{
         NoticeDto noticeDto = noticeMapper.getNoticeById(dto.getNoticeId());
 
         // 파라미터로 받은 id의 데이터가 없을시 에러 발생
@@ -58,7 +67,13 @@ public class NoticeServiceImpl implements NoticeService{
             throw new IdNotFoundException("current id is not found");
         }
 
-        noticeMapper.updateNotice(dto);
+        NoticeDto nDto = new NoticeDto();
+        nDto.setNoticeId(dto.getNoticeId());
+        nDto.setTitle(dto.getTitle());
+        nDto.setContent(dto.getContent());
+        LocalDate localDate = LocalDate.now();
+        nDto.setWrittenDay(localDate);
+        noticeMapper.updateNotice(nDto);
     }
 
     @Override

@@ -13,7 +13,7 @@
         insert into notice (writerId, title, content, writtenDay) values (#{writerId}, #{title}, #{content}, #{writtenDay})
     </insert>
     <update id="updateNotice" parameterType="notice">
-        update notice set title=#{title}, content=#{content} where noticeId=#{noticeId}
+        update notice set title=#{title}, content=#{content}, writtenDay=#{writtenDay} where noticeId=#{noticeId}
     </update>
     <delete id="deleteNotice" parameterType="int">
         delete from notice where noticeId=#{noticeId}
