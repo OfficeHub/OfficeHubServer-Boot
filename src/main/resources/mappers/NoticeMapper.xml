@@ -19,6 +19,6 @@
         delete from notice where noticeId=#{noticeId}
     </delete>
     <select id="getCountOfNotices" resultType="int">
-        select count(noticeId) from notice
+        select count(*) from notice
     </select>
 </mapper>

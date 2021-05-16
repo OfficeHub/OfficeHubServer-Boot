@@ -5,7 +5,6 @@ import com.officehub.officehubserver.OfficeHubServer.dto.PostNoticeDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.PutNoticeDto;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.repository.NoticeMapper;
-import org.apache.tomcat.jni.Local;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -88,4 +87,8 @@ public class NoticeServiceImpl implements NoticeService{
         noticeMapper.deleteNotice(noticeId);
     }
 
+    @Override
+    public int getCountOfNotices() {
+        return noticeMapper.getCountOfNotices();
+    }
 }
