@@ -2,10 +2,7 @@ package com.officehub.officehubserver.OfficeHubServer.dto;
 
 import org.apache.ibatis.type.Alias;
 
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Alias("notice") // mybatis 별칭
 public class NoticeDto {
@@ -13,7 +10,7 @@ public class NoticeDto {
     private String title;
     private String content;
     private int writerId;
-    private Date writtenDay;
+    private LocalDate writtenDay;
 
     public int getNoticeId() {
         return noticeId;
@@ -47,11 +44,11 @@ public class NoticeDto {
         this.writerId = writerId;
     }
 
-    public Date getWrittenDay() {
+    public LocalDate getWrittenDay() {
         return writtenDay;
     }
 
-    public void setWrittenDay(Date writtenDay) {
+    public void setWrittenDay(LocalDate writtenDay) {
         this.writtenDay = writtenDay;
     }
 

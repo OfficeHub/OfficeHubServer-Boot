@@ -1,17 +1,14 @@
 package com.officehub.officehubserver.OfficeHubServer.controller;
 
-import com.officehub.officehubserver.OfficeHubServer.dto.NoticeDto;
-import com.officehub.officehubserver.OfficeHubServer.repository.NoticeRepository;
-import com.officehub.officehubserver.OfficeHubServer.repository.TestRepository;
+import com.officehub.officehubserver.OfficeHubServer.dto.*;
+import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.service.NoticeService;
 import com.officehub.officehubserver.OfficeHubServer.service.NoticeServiceImpl;
+import com.officehub.officehubserver.OfficeHubServer.utils.ApiUtils;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
-import lombok.Data;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
 import java.util.List;
 
 @RestController
@@ -19,70 +16,30 @@ public class NoticeController {
 
     private final NoticeService noticeService;
 
-    public NoticeController(NoticeServiceImpl noticeService) {
-        this.noticeService = noticeService;
-    }
-
-    /**
-     * 공지 목록 내부 클래스
-     */
-    @Data
-    public static class JsonNoticeList{
-        private List<NoticeDto> notices;
-
-        public JsonNoticeList(List<NoticeDto> notices){
-            this.notices = notices;
-        }
-    }
-
-    /**
-     * Test 공지 목록 출력
-     * @param offset 보여질 공지 목록 첫 index
-     * @param size 보여질 공지 개수
-     * @return 공지 목록 내부 객체(type: JsonNoticeList)
-     * @throws ParseException
-     */
-    @ApiOperation(value = "임시 공지목록 출력", notes = "총 테스트 데이터 : 5개")
-    @GetMapping("/test/notices")
-    public JsonNoticeList getTestNoticeList(@ApiParam(value = "시작 순서", example = "0")
-                                        @RequestParam(value = "offset") int offset,
-                                        @ApiParam(value = "공지 총개수", example = "5")
-                                        @RequestParam(value = "size") int size) throws ParseException {
-        NoticeRepository testRepository = new TestRepository();
-
-        return new JsonNoticeList(testRepository.getNotices(offset, size));
-    }
-
-    /**
-     * Test 공지 상세 정보 출력
-     * @param noticeId 공지 PK
-     * @return 공지 객체(type: NoticeDto)
-     */
-    @ApiOperation(value = "임시 공지상세정보 출력", notes = "총 테스트 데이터 : 1개")
-    @GetMapping("/test/notice")
-    public NoticeDto getTestNotice(@RequestParam(value = "noticeId") int noticeId) {
-        NoticeRepository testRepository = new TestRepository();
-        NoticeDto ndto = testRepository.getNotice(noticeId);
-
-        return ndto;
+    public NoticeController(NoticeServiceImpl noticeServiceImpl) {
+        this.noticeService = noticeServiceImpl;
     }
 
     /**
      * 공지 목록 출력
-     * @param offset 보여질 공지 목록 첫 index
-     * @param size 보여질 공지 개수
-     * @return 공지 목록 내부 객체(type: JsonNoticeList)
-     * @throws ParseException
+     * @param offset 출력할 공지 시작 index
+     * @param size 요청 공지 개수
+     * @return 공지 목록(type: JsonNoticeList)
      */
     @ApiOperation(value = "공지목록 출력")
     @GetMapping("/notices")
-    public JsonNoticeList getNoticeList(@ApiParam(value = "시작 순서")
+    public ApiResult<?> getNoticeList(@ApiParam(value = "출력할 공지 시작 index")
                                         @RequestParam(value = "offset") int offset,
-                                        @ApiParam(value = "공지 총개수")
-                                        @RequestParam(value = "size") int size) throws ParseException {
-        List<NoticeDto> list = noticeService.getNoticeList(offset, size);
-
-        return new JsonNoticeList(list);
+                                      @ApiParam(value = "요청 공지 개수")
+                                        @RequestParam(value = "size") int size) {
+        List<NoticeDto> list;
+        try {
+             list = noticeService.getNoticeList(offset, size);
+        } catch (IndexOutOfBoundsException e) {
+            // 출력하고자하는 결과가 db의 데이터들의 범위를 넘어갈시 에러 발생(offset이 db에 있는 전 공지 갯수를 넘어갈 때 발생)
+            return ApiUtils.error(e.getMessage(), 400);
+        }
+        return ApiUtils.success(new JsonNoticeListDto(list));
     }
 
     /**
@@ -91,26 +48,40 @@ public class NoticeController {
      * @return 공지 객체(type: NoticeDto)
      */
     @GetMapping("/notice/{noticeId}")
-    public NoticeDto getNotice(@PathVariable(value = "noticeId") int noticeId) {
-        return noticeService.getNoticeById(noticeId);
+    public ApiResult<?> getNoticeById(@PathVariable(value = "noticeId") int noticeId) {
+        NoticeDto nDto;
+        try {
+            nDto = noticeService.getNoticeById(noticeId);
+        } catch (IdNotFoundException e) {
+            // 파라미터로 받은 id의 데이터가 없을시 에러 발생
+            return ApiUtils.error(e.getMessage(), 400);
+        }
+        return ApiUtils.success(nDto);
     }
 
     /**
      * 공지사항 추가
-     * @param noticeDto (type: NoticeDto)
+     * @param dto (type: PostNoticeDto)
      */
     @PostMapping("/notice")
-    public void insertNotice(@RequestBody NoticeDto noticeDto){
-        noticeService.insertNotice(noticeDto);
+    public ApiResult<?> insertNotice(@RequestBody PostNoticeDto dto){
+        noticeService.insertNotice(dto);
+        return ApiUtils.success(null);
     }
 
     /**
      * 공지사항 수정
-     * @param noticeDto (type: NoticeDto)
+     * @param dto (type: PutNoticeDto)
      */
     @PutMapping("/notice")
-    public void updateNotice(@RequestBody NoticeDto noticeDto){
-        noticeService.updateNotice(noticeDto);
+    public ApiResult<?> updateNotice(@RequestBody PutNoticeDto dto){
+        try {
+            noticeService.updateNotice(dto);
+        } catch (IdNotFoundException e) {
+            // 파라미터로 받은 id의 데이터가 없을시 에러 발생
+            return ApiUtils.error(e.getMessage(), 400);
+        }
+        return ApiUtils.success(null);
     }
 
     /**
@@ -118,8 +89,14 @@ public class NoticeController {
      * @param noticeId 공지 PK
      */
     @DeleteMapping("/notice/{noticeId}")
-    public void deleteNotice(@PathVariable(value = "noticeId") int noticeId){
-        noticeService.deleteNotice(noticeId);
+    public ApiResult<?> deleteNotice(@PathVariable(value = "noticeId") int noticeId){
+        try {
+            noticeService.deleteNotice(noticeId);
+        } catch (IdNotFoundException e) {
+            // 파라미터로 받은 id의 데이터가 없을시 에러 발생
+            return ApiUtils.error(e.getMessage(), 400);
+        }
+        return ApiUtils.success(null);
     }
 }
 
