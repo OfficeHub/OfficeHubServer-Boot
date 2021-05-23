@@ -13,4 +13,5 @@ public interface NoticeService {
     void insertNotice(PostNoticeDto dto);
     void updateNotice(PutNoticeDto dto);
     void deleteNotice(int noticeId);
+    int getCountOfNotices();
 }
