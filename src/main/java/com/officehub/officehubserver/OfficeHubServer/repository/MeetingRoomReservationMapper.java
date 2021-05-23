@@ -12,8 +12,10 @@ public interface MeetingRoomReservationMapper {
     List<MeetingRoomReservationDto> getAllReservationListByDate(LocalDate reservationDate);
     void bookMeetingRoom(PostMeetingRoomReservationDto postMeetingRoomReservationDto);
     int checkReservationOverlap(PostMeetingRoomReservationDto postMeetingRoomReservationDto);
-    List<MeetingRoomReservationDto> getMeetingRoomReservationListByEmployeeId(Long subscriberId);
-    void deleteMeetingRoomReservation(Long reservationId);
-    int getMeetingRoomReservationByReservationId(Long reservationId);
-    int getMeetingRoomCountById(Long roomId);
+    List<MeetingRoomReservationDto> getMeetingRoomReservationListByEmployeeId(int subscriberId);
+    int getMeetingRoomReservationCountByEmployeeId(int subscriberId);
+    void deleteMeetingRoomReservation(int reservationId);
+    int getMeetingRoomReservationByReservationId(int reservationId);
+    int getMeetingRoomCountById(int roomId);
+    int getEmployeeCountById(int subscriberId);
 }

@@ -1,75 +1,29 @@
 package com.officehub.officehubserver.OfficeHubServer.dto;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.ibatis.type.Alias;
 
+import java.sql.Date;
 import java.time.LocalDate;
 
 @Alias("meetingRoomReservation")
+@Getter
+@Setter
 public class MeetingRoomReservationDto {
-    private Long reservationId;
-    private Long roomId;
-    private Long subscriberId;
+    private int reservationId;
+    private int roomId;
+    private int subscriberId;
     private int startHour;
     private int endHour;
     private LocalDate reservationDate;
 
-    public Long getReservationId() {
-        return reservationId;
-    }
-
-    public void setReservationId(Long reservationId) {
+    public MeetingRoomReservationDto(int reservationId, int roomId, int subscriberId, int startHour, int endHour, Date reservationDate) {
         this.reservationId = reservationId;
-    }
-
-    public Long getRoomId() {
-        return roomId;
-    }
-
-    public void setRoomId(Long roomId) {
         this.roomId = roomId;
-    }
-
-    public Long getSubscriberId() {
-        return subscriberId;
-    }
-
-    public void setSubscriberId(Long subscriberId) {
         this.subscriberId = subscriberId;
-    }
-
-    public int getStartHour() {
-        return startHour;
-    }
-
-    public void setStartHour(int startHour) {
         this.startHour = startHour;
-    }
-
-    public int getEndHour() {
-        return endHour;
-    }
-
-    public void setEndHour(int endHour) {
         this.endHour = endHour;
-    }
-
-    public LocalDate getReservationDate() {
-        return reservationDate;
-    }
-
-    public void setReservationDate(LocalDate reservationDate) {
-        this.reservationDate = reservationDate;
-    }
-
-    @Override
-    public String toString() {
-        return "MeetingRoomReservationDto{" +
-                "reservationId=" + reservationId +
-                ", roomId=" + roomId +
-                ", subscriberId=" + subscriberId +
-                ", startHour=" + startHour +
-                ", endHour=" + endHour +
-                ", reservationDate=" + reservationDate +
-                '}';
+        this.reservationDate = reservationDate.toLocalDate();
     }
 }

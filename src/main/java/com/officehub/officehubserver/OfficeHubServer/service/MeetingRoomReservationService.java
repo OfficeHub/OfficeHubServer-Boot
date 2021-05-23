@@ -9,6 +9,6 @@ import java.util.List;
 public interface MeetingRoomReservationService {
     List<MeetingRoomReservationDto> getAllReservationListByDate(LocalDate reservationDate);
     void bookMeetingRoom(PostMeetingRoomReservationDto postMeetingRoomReservationDto);
-    List<MeetingRoomReservationDto> getMeetingRoomReservationListByEmployeeId(Long subscriberId);
-    void deleteMeetingRoomReservation(Long reservationId);
+    List<MeetingRoomReservationDto> getMeetingRoomReservationListByEmployeeId(int subscriberId);
+    void deleteMeetingRoomReservation(int reservationId);
 }

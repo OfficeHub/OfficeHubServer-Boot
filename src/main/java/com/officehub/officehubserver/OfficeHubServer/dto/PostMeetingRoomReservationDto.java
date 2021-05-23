@@ -10,8 +10,8 @@ import java.time.LocalDate;
 @Setter
 @Alias("postMeetingRoomReservation")
 public class PostMeetingRoomReservationDto {
-    private Long roomId;
-    private Long subscriberId;
+    private int roomId;
+    private int subscriberId;
     private int startHour;
     private int endHour;
     private LocalDate reservationDate;

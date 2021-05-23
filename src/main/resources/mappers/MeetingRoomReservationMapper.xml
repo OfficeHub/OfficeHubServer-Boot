@@ -14,11 +14,14 @@
     <select id="checkReservationOverlap" parameterType="postMeetingRoomReservation" resultType="int">
         <![CDATA[
             select count(reservation_id) from meeting_room_reservation
-            where room_id = #{room_id} and reservation_date = #{reservationDate} and
+            where room_id = #{roomId} and reservation_date = #{reservationDate} and
             ((start_hour >= #{startHour} and start_hour < #{endHour})
             or (end_hour > #{startHour} and end_hour <= #{endHour})
-            or (start_hour <= #{start_hour} and end_hour >= #{endHour}))
+            or (start_hour <= #{startHour} and end_hour >= #{endHour}))
         ]]>
+    </select>
+    <select id="getMeetingRoomReservationCountByEmployeeId" parameterType="int" resultType="int">
+        select count(reservation_id) from meeting_room_reservation where subscriber_id = #{subscriberId}
     </select>
     <select id="getMeetingRoomReservationListByEmployeeId" parameterType="int" resultType="meetingRoomReservation">
         select reservation_id, room_id, subscriber_id, start_hour, end_hour, reservation_date from meeting_room_reservation
@@ -31,7 +34,9 @@
         select count(reservation_id) from meeting_room_reservation where reservation_id = #{reservationId}
     </select>
     <select id="getMeetingRoomCountById" parameterType="int" resultType="int">
-        select count(room_id) from meeting_room where room_id = #{room_id}
+        select count(room_id) from meeting_room where room_id = #{roomId}
     </select>
-    <select id="getEmloyeeCountById" parameterType=""
+    <select id="getEmployeeCountById" parameterType="int" resultType="int">
+        select count(employee_id) from employee where employee_id = #{subscriberId}
+    </select>
 </mapper>

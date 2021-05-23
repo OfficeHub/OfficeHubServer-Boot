@@ -22,6 +22,8 @@ public class MeetingRoomReservationServiceImpl implements MeetingRoomReservation
 
     @Override
     public List<MeetingRoomReservationDto> getAllReservationListByDate(LocalDate reservationDate) {
+        // 날짜 입력 패턴이 잘못됬을 때
+
         return meetingRoomReservationMapper.getAllReservationListByDate(reservationDate);
     }
 
@@ -35,13 +37,18 @@ public class MeetingRoomReservationServiceImpl implements MeetingRoomReservation
         }
 
         // IdNotFoundException : roomId
-        Long roomId = postMeetingRoomReservationDto.getRoomId();
+        int roomId = postMeetingRoomReservationDto.getRoomId();
         int roomCount = meetingRoomReservationMapper.getMeetingRoomCountById(roomId);
         if (roomCount == 0) {
             throw new IdNotFoundException("roomId not found");
         }
 
-        // IdNotFoundException : employeeId
+        // IdNotFoundException : subscriberId
+        int subscriberId = postMeetingRoomReservationDto.getSubscriberId();
+        int employeeCount = meetingRoomReservationMapper.getEmployeeCountById(subscriberId);
+        if (employeeCount == 0) {
+            throw new IdNotFoundException("employeeId not found");
+        }
 
         // AlreadyBookedInTimeException
         int wrongCount = meetingRoomReservationMapper.checkReservationOverlap(postMeetingRoomReservationDto);
@@ -53,17 +60,18 @@ public class MeetingRoomReservationServiceImpl implements MeetingRoomReservation
     }
 
     @Override
-    public List<MeetingRoomReservationDto> getMeetingRoomReservationListByEmployeeId(Long subscriberId) {
-        // IdNotFoundException
-        List<MeetingRoomReservationDto> list = meetingRoomReservationMapper.getMeetingRoomReservationListByEmployeeId(subscriberId);
-        if (list == null) {
-            throw new IdNotFoundException("id not found");
+    public List<MeetingRoomReservationDto> getMeetingRoomReservationListByEmployeeId(int subscriberId) {
+        // IdNotFoundException : employeeId
+        int employeeIdCount = meetingRoomReservationMapper.getEmployeeCountById(subscriberId);
+        if (employeeIdCount == 0) {
+            throw new IdNotFoundException("employeeId not found");
         }
-        return list;
+
+        return meetingRoomReservationMapper.getMeetingRoomReservationListByEmployeeId(subscriberId);
     }
 
     @Override
-    public void deleteMeetingRoomReservation(Long reservationId) {
+    public void deleteMeetingRoomReservation(int reservationId) {
         // IdNotFoundException
         int count = meetingRoomReservationMapper.getMeetingRoomReservationByReservationId(reservationId);
         if (count == 0) {
