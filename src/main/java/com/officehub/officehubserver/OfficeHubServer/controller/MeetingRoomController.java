@@ -5,16 +5,15 @@ import com.officehub.officehubserver.OfficeHubServer.dto.JsonMeetingRoomReservat
 import com.officehub.officehubserver.OfficeHubServer.dto.MeetingRoomReservationDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.PostMeetingRoomReservationDto;
 import com.officehub.officehubserver.OfficeHubServer.exception.AlreadyBookedInTimeException;
+import com.officehub.officehubserver.OfficeHubServer.exception.BadRequestFormatException;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.exception.WrongTimeRangeException;
 import com.officehub.officehubserver.OfficeHubServer.service.MeetingRoomReservationService;
 import com.officehub.officehubserver.OfficeHubServer.service.MeetingRoomReservationServiceImpl;
 import com.officehub.officehubserver.OfficeHubServer.utils.ApiUtils;
 import io.swagger.annotations.ApiParam;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -35,8 +34,13 @@ public class MeetingRoomController {
     @GetMapping("/meeting-room-reservations/{reservationDate}")
     public ApiResult<?> getAllReservationListByDate(@PathVariable(value = "reservationDate")
                                                     @ApiParam(value = "pattern: yyyy-MM-dd")
-                                                    @DateTimeFormat(pattern = "yyyy-MM-dd") LocalDate reservationDate) {
-        List<MeetingRoomReservationDto> list = mService.getAllReservationListByDate(reservationDate);
+                                                    String reservationDate) {
+        List<MeetingRoomReservationDto> list;
+        try {
+            list = mService.getAllReservationListByDate(reservationDate);
+        }catch (BadRequestFormatException e) {
+            return ApiUtils.error(e.getMessage(), 400);
+        }
 
         return ApiUtils.success(new JsonMeetingRoomReservationListDto(list));
     }

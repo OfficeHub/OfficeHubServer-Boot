@@ -3,12 +3,15 @@ package com.officehub.officehubserver.OfficeHubServer.service;
 import com.officehub.officehubserver.OfficeHubServer.dto.MeetingRoomReservationDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.PostMeetingRoomReservationDto;
 import com.officehub.officehubserver.OfficeHubServer.exception.AlreadyBookedInTimeException;
+import com.officehub.officehubserver.OfficeHubServer.exception.BadRequestFormatException;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.exception.WrongTimeRangeException;
 import com.officehub.officehubserver.OfficeHubServer.repository.MeetingRoomReservationMapper;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 @Service
@@ -21,10 +24,16 @@ public class MeetingRoomReservationServiceImpl implements MeetingRoomReservation
     }
 
     @Override
-    public List<MeetingRoomReservationDto> getAllReservationListByDate(LocalDate reservationDate) {
-        // 날짜 입력 패턴이 잘못됬을 때
+    public List<MeetingRoomReservationDto> getAllReservationListByDate(String reservationDate) {
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fixedReservationDate;
+        try {
+            fixedReservationDate = LocalDate.parse(reservationDate, dateTimeFormatter);
+        } catch (DateTimeParseException e) {  // 날짜 입력 패턴이 잘못됬을 때
+            throw new BadRequestFormatException("Bad request format");
+        }
 
-        return meetingRoomReservationMapper.getAllReservationListByDate(reservationDate);
+        return meetingRoomReservationMapper.getAllReservationListByDate(fixedReservationDate);
     }
 
     @Override
