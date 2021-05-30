@@ -39,7 +39,7 @@ public class MeetingRoomController {
         try {
             list = mService.getAllReservationListByDate(reservationDate);
         }catch (BadRequestFormatException e) {
-            return ApiUtils.error(e.getMessage(), 400);
+            return ApiUtils.error(e, 400);
         }
 
         return ApiUtils.success(new JsonMeetingRoomReservationListDto(list));
@@ -54,8 +54,8 @@ public class MeetingRoomController {
     public ApiResult<?> bookMeetingRoom(@RequestBody PostMeetingRoomReservationDto dto) {
         try {
             mService.bookMeetingRoom(dto);
-        } catch (WrongTimeRangeException | IdNotFoundException | AlreadyBookedInTimeException e1) {
-            return ApiUtils.error(e1.getMessage(), 400);
+        } catch (WrongTimeRangeException | IdNotFoundException | AlreadyBookedInTimeException e) {
+            return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);
     }
@@ -72,7 +72,7 @@ public class MeetingRoomController {
         try {
             list = mService.getMeetingRoomReservationListByEmployeeId(employeeId);
         } catch (IdNotFoundException e) {
-            return ApiUtils.error(e.getMessage(), 400);
+            return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(new JsonMeetingRoomReservationListDto(list));
     }
@@ -88,7 +88,7 @@ public class MeetingRoomController {
         try {
             mService.deleteMeetingRoomReservation(reservationId);
         }catch (IdNotFoundException e) {
-            return ApiUtils.error(e.getMessage(), 400);
+            return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);
     }
