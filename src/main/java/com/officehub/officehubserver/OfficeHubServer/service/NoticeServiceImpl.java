@@ -87,8 +87,4 @@ public class NoticeServiceImpl implements NoticeService{
         noticeMapper.deleteNotice(noticeId);
     }
 
-    @Override
-    public int getCountOfNotices() {
-        return noticeMapper.getCountOfNotices();
-    }
 }
