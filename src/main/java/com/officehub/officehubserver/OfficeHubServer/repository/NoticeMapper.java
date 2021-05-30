@@ -1,19 +1,17 @@
 package com.officehub.officehubserver.OfficeHubServer.repository;
 
-import com.officehub.officehubserver.OfficeHubServer.dto.NoticeDto;
+import com.officehub.officehubserver.OfficeHubServer.dto.entity.NoticeEntity;
 import org.apache.ibatis.annotations.Mapper;
-import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @Mapper
 public interface NoticeMapper {
-    List<NoticeDto> getNoticeList(Map<String, Integer> map);
-    NoticeDto getNoticeById(int noticeId);
-    void insertNotice(NoticeDto dto);
-    void updateNotice(NoticeDto dto);
+    List<NoticeEntity> getNoticeList(Map<String, Integer> map);
+    NoticeEntity getNoticeById(int noticeId);
+    void insertNotice(NoticeEntity dto);
+    void updateNotice(NoticeEntity dto);
     void deleteNotice(int noticeId);
     int getCountOfNotices();
 }

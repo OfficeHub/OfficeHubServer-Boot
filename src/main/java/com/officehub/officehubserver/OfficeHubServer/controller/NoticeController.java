@@ -1,6 +1,7 @@
 package com.officehub.officehubserver.OfficeHubServer.controller;
 
 import com.officehub.officehubserver.OfficeHubServer.dto.*;
+import com.officehub.officehubserver.OfficeHubServer.dto.entity.NoticeEntity;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.service.NoticeService;
 import com.officehub.officehubserver.OfficeHubServer.service.NoticeServiceImpl;
@@ -32,12 +33,12 @@ public class NoticeController {
                                         @RequestParam(value = "offset") int offset,
                                       @ApiParam(value = "요청 공지 개수")
                                         @RequestParam(value = "size") int size) {
-        List<NoticeDto> list;
+        List<NoticeEntity> list;
         try {
              list = noticeService.getNoticeList(offset, size);
         } catch (IndexOutOfBoundsException e) {
             // 출력하고자하는 결과가 db의 데이터들의 범위를 넘어갈시 에러 발생(offset이 db에 있는 전 공지 갯수를 넘어갈 때 발생)
-            return ApiUtils.error(e.getMessage(), 400);
+            return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(new JsonNoticeListDto(list));
     }
@@ -49,12 +50,12 @@ public class NoticeController {
      */
     @GetMapping("/notice/{noticeId}")
     public ApiResult<?> getNoticeById(@PathVariable(value = "noticeId") int noticeId) {
-        NoticeDto nDto;
+        NoticeEntity nDto;
         try {
             nDto = noticeService.getNoticeById(noticeId);
         } catch (IdNotFoundException e) {
             // 파라미터로 받은 id의 데이터가 없을시 에러 발생
-            return ApiUtils.error(e.getMessage(), 400);
+            return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(nDto);
     }
@@ -79,7 +80,7 @@ public class NoticeController {
             noticeService.updateNotice(dto);
         } catch (IdNotFoundException e) {
             // 파라미터로 받은 id의 데이터가 없을시 에러 발생
-            return ApiUtils.error(e.getMessage(), 400);
+            return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);
     }
@@ -94,7 +95,7 @@ public class NoticeController {
             noticeService.deleteNotice(noticeId);
         } catch (IdNotFoundException e) {
             // 파라미터로 받은 id의 데이터가 없을시 에러 발생
-            return ApiUtils.error(e.getMessage(), 400);
+            return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);
     }

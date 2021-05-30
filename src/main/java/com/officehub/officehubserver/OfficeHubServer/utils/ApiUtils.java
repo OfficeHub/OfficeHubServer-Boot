@@ -8,7 +8,7 @@ public class ApiUtils {
         return new ApiResult<>(true, response, null);
     }
 
-    public static ApiResult<?> error(String message, int status) {
-        return new ApiResult<>(false, null, new ApiError(message, status));
+    public static <T extends RuntimeException>ApiResult<?> error(T exceptionType, int status) {
+        return new ApiResult<>(false, null, new ApiError<>(exceptionType, exceptionType.getMessage(), status));
     }
 }

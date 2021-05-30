@@ -1,12 +1,13 @@
 package com.officehub.officehubserver.OfficeHubServer.service;
 
-import com.officehub.officehubserver.OfficeHubServer.dto.NoticeDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.PostNoticeDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.PutNoticeDto;
+import com.officehub.officehubserver.OfficeHubServer.dto.entity.NoticeEntity;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.repository.NoticeMapper;
 import org.springframework.stereotype.Service;
 
+import java.sql.Date;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +22,7 @@ public class NoticeServiceImpl implements NoticeService{
         this.noticeMapper = noticeMapper;
     }
 
-    public List<NoticeDto> getNoticeList(int offset, int size) throws IndexOutOfBoundsException{
+    public List<NoticeEntity> getNoticeList(int offset, int size) throws IndexOutOfBoundsException{
         int totalCountOfNotices = noticeMapper.getCountOfNotices();  // 공지사항 총 개수
 
         if (totalCountOfNotices <= offset) {
@@ -35,52 +36,50 @@ public class NoticeServiceImpl implements NoticeService{
         return noticeMapper.getNoticeList(map);
     }
 
-    public NoticeDto getNoticeById(int noticeId) throws IdNotFoundException{
-        NoticeDto noticeDto = noticeMapper.getNoticeById(noticeId);
+    public NoticeEntity getNoticeById(int noticeId) throws IdNotFoundException{
+        NoticeEntity noticeEntity = noticeMapper.getNoticeById(noticeId);
 
         // 파라미터로 받은 id의 데이터가 없을시 에러 발생
-            if (noticeDto == null) {
-                throw new IdNotFoundException("current id is not found");
+        if (noticeEntity == null) {
+            throw new IdNotFoundException("current id is not found");
         }
 
-        return noticeDto;
+        return noticeEntity;
     }
 
     @Override
     public void insertNotice(PostNoticeDto dto) {
-        NoticeDto noticeDto = new NoticeDto();
-        noticeDto.setTitle(dto.getTitle());
-        noticeDto.setContent(dto.getContent());
-        noticeDto.setWriterId(dto.getWriterId());
+        String title = dto.getTitle();
+        String content = dto.getContent();
+        int writerId = dto.getWriterId();
         LocalDate localDate = LocalDate.now();
-        noticeDto.setWrittenDay(localDate);
-        noticeMapper.insertNotice(noticeDto);
+        NoticeEntity noticeEntity = new NoticeEntity(0, writerId, title, content, Date.valueOf(localDate));
+        noticeMapper.insertNotice(noticeEntity);
     }
 
     @Override
     public void updateNotice(PutNoticeDto dto) throws IdNotFoundException{
-        NoticeDto noticeDto = noticeMapper.getNoticeById(dto.getNoticeId());
+        NoticeEntity noticeEntity = noticeMapper.getNoticeById(dto.getNoticeId());
 
         // 파라미터로 받은 id의 데이터가 없을시 에러 발생
-        if (noticeDto == null) {
+        if (noticeEntity == null) {
             throw new IdNotFoundException("current id is not found");
         }
 
-        NoticeDto nDto = new NoticeDto();
-        nDto.setNoticeId(dto.getNoticeId());
-        nDto.setTitle(dto.getTitle());
-        nDto.setContent(dto.getContent());
+        int noticeId = dto.getNoticeId();
+        String title = dto.getTitle();
+        String content = dto.getContent();
         LocalDate localDate = LocalDate.now();
-        nDto.setWrittenDay(localDate);
-        noticeMapper.updateNotice(nDto);
+        NoticeEntity noticeEntity2 = new NoticeEntity(noticeId, 0, title, content, Date.valueOf(localDate));
+        noticeMapper.updateNotice(noticeEntity2);
     }
 
     @Override
     public void deleteNotice(int noticeId) {
-        NoticeDto noticeDto = noticeMapper.getNoticeById(noticeId);
+        NoticeEntity noticeEntity = noticeMapper.getNoticeById(noticeId);
 
         // 파라미터로 받은 id의 데이터가 없을시 에러 발생
-        if (noticeDto == null) {
+        if (noticeEntity == null) {
             throw new IdNotFoundException("current id is not found");
         }
 
