@@ -14,6 +14,7 @@ import com.officehub.officehubserver.OfficeHubServer.utils.ApiUtils;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -34,11 +35,13 @@ public class MeetingRoomController {
     @GetMapping("/meeting-room-reservations/{reservationDate}")
     public ApiResult<?> getAllReservationListByDate(@PathVariable(value = "reservationDate")
                                                     @ApiParam(value = "pattern: yyyy-MM-dd")
-                                                    String reservationDate) {
+                                                    String reservationDate,
+                                                    HttpServletResponse response) {
         List<MeetingRoomReservationDto> list;
         try {
             list = mService.getAllReservationListByDate(reservationDate);
         }catch (BadRequestFormatException e) {
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
 
@@ -51,10 +54,12 @@ public class MeetingRoomController {
      * @param dto (type: PostMeetingRoomReservationDto)
      */
     @PostMapping("/meeting-room-reservation")
-    public ApiResult<?> bookMeetingRoom(@RequestBody PostMeetingRoomReservationDto dto) {
+    public ApiResult<?> bookMeetingRoom(@RequestBody PostMeetingRoomReservationDto dto,
+                                        HttpServletResponse response) {
         try {
             mService.bookMeetingRoom(dto);
         } catch (WrongTimeRangeException | IdNotFoundException | AlreadyBookedInTimeException e) {
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);
@@ -67,11 +72,13 @@ public class MeetingRoomController {
      * @return list (type: List<MeetingRoomReservationDto>)
      */
     @GetMapping("/meeting-room-reservation/{employeeId}")
-    public ApiResult<?> getMeetingRoomReservationListByEmployeeId(@PathVariable(value = "employeeId") int employeeId) {
+    public ApiResult<?> getMeetingRoomReservationListByEmployeeId(@PathVariable(value = "employeeId") int employeeId,
+                                                                  HttpServletResponse response) {
         List<MeetingRoomReservationDto> list;
         try {
             list = mService.getMeetingRoomReservationListByEmployeeId(employeeId);
         } catch (IdNotFoundException e) {
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(new JsonMeetingRoomReservationListDto(list));
@@ -83,11 +90,12 @@ public class MeetingRoomController {
      * @param reservationId
      */
     @DeleteMapping("/meeting-room-reservation/{reservationId}")
-    public ApiResult<?> deleteMeetingRoomReservation(@PathVariable(value = "reservationId") int reservationId) {
-
+    public ApiResult<?> deleteMeetingRoomReservation(@PathVariable(value = "reservationId") int reservationId,
+                                                     HttpServletResponse response) {
         try {
             mService.deleteMeetingRoomReservation(reservationId);
         }catch (IdNotFoundException e) {
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);

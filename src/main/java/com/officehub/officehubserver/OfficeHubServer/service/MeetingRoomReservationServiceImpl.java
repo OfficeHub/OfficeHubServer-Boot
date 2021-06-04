@@ -30,7 +30,7 @@ public class MeetingRoomReservationServiceImpl implements MeetingRoomReservation
         try {
             fixedReservationDate = LocalDate.parse(reservationDate, dateTimeFormatter);
         } catch (DateTimeParseException e) {  // 날짜 입력 패턴이 잘못됬을 때
-            throw new BadRequestFormatException("Bad request format");
+            throw new BadRequestFormatException("Bad request date format");
         }
 
         return meetingRoomReservationMapper.getAllReservationListByDate(fixedReservationDate);
