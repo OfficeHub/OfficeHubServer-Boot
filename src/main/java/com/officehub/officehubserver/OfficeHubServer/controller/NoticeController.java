@@ -1,6 +1,9 @@
 package com.officehub.officehubserver.OfficeHubServer.controller;
 
-import com.officehub.officehubserver.OfficeHubServer.dto.*;
+import com.officehub.officehubserver.OfficeHubServer.dto.ApiResult;
+import com.officehub.officehubserver.OfficeHubServer.dto.JsonNoticeListDto;
+import com.officehub.officehubserver.OfficeHubServer.dto.PostNoticeDto;
+import com.officehub.officehubserver.OfficeHubServer.dto.PutNoticeDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.entity.NoticeEntity;
 import com.officehub.officehubserver.OfficeHubServer.exception.IdNotFoundException;
 import com.officehub.officehubserver.OfficeHubServer.service.NoticeService;
@@ -10,6 +13,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @RestController
@@ -32,12 +36,13 @@ public class NoticeController {
     public ApiResult<?> getNoticeList(@ApiParam(value = "출력할 공지 시작 index")
                                         @RequestParam(value = "offset") int offset,
                                       @ApiParam(value = "요청 공지 개수")
-                                        @RequestParam(value = "size") int size) {
+                                        @RequestParam(value = "size") int size,
+                                      HttpServletResponse response) {
         List<NoticeEntity> list;
         try {
              list = noticeService.getNoticeList(offset, size);
         } catch (IndexOutOfBoundsException e) {
-            // 출력하고자하는 결과가 db의 데이터들의 범위를 넘어갈시 에러 발생(offset이 db에 있는 전 공지 갯수를 넘어갈 때 발생)
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(new JsonNoticeListDto(list));
@@ -49,12 +54,13 @@ public class NoticeController {
      * @return 공지 객체(type: NoticeDto)
      */
     @GetMapping("/notice/{noticeId}")
-    public ApiResult<?> getNoticeById(@PathVariable(value = "noticeId") int noticeId) {
+    public ApiResult<?> getNoticeById(@PathVariable(value = "noticeId") int noticeId,
+                                      HttpServletResponse response) {
         NoticeEntity nDto;
         try {
             nDto = noticeService.getNoticeById(noticeId);
         } catch (IdNotFoundException e) {
-            // 파라미터로 받은 id의 데이터가 없을시 에러 발생
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(nDto);
@@ -75,11 +81,12 @@ public class NoticeController {
      * @param dto (type: PutNoticeDto)
      */
     @PutMapping("/notice")
-    public ApiResult<?> updateNotice(@RequestBody PutNoticeDto dto){
+    public ApiResult<?> updateNotice(@RequestBody PutNoticeDto dto,
+                                     HttpServletResponse response){
         try {
             noticeService.updateNotice(dto);
         } catch (IdNotFoundException e) {
-            // 파라미터로 받은 id의 데이터가 없을시 에러 발생
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);
@@ -90,11 +97,12 @@ public class NoticeController {
      * @param noticeId 공지 PK
      */
     @DeleteMapping("/notice/{noticeId}")
-    public ApiResult<?> deleteNotice(@PathVariable(value = "noticeId") int noticeId){
+    public ApiResult<?> deleteNotice(@PathVariable(value = "noticeId") int noticeId,
+                                     HttpServletResponse response){
         try {
             noticeService.deleteNotice(noticeId);
         } catch (IdNotFoundException e) {
-            // 파라미터로 받은 id의 데이터가 없을시 에러 발생
+            response.setStatus(400);
             return ApiUtils.error(e, 400);
         }
         return ApiUtils.success(null);
