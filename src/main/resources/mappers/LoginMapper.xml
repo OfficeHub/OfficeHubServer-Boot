@@ -4,9 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.officehub.officehubserver.OfficeHubServer.repository.LoginMapper">
     <select id="getLogin" parameterType="Hashmap" resultType="Login">
-        select * from login where userId = #{userId} and password = #{Password}
+        select * from login where user_id = #{userId} and password = #{Password}
     </select>
     <insert id="addLogin" parameterType="Login">
-        insert into login (employeeId, userId, password) VALUES (#{employeeId}, #{userId}, #{password});
+        insert into login (employee_id, user_id, password) VALUES (#{employeeId}, #{userId}, #{password});
     </insert>
 </mapper>
