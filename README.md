@@ -1,5 +1,7 @@
 # 오피스 허브
 
+2021-08 중으로 내용 업데이트 예정
+
 ### 빌드툴 설치(maven wrapper)  
 ```shell
 mvn -N io.takari:maven:wrapper
