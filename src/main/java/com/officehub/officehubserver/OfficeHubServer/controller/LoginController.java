@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.officehub.officehubserver.Authentication.CryptoAlgorithm;
 import com.officehub.officehubserver.OfficeHubServer.dto.AddAccountDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.LoginDto;
 import com.officehub.officehubserver.OfficeHubServer.service.LoginService;
@@ -57,8 +56,6 @@ public class LoginController {
 	@PostMapping(value = "/useradd")
 	public void Loginadd(@RequestBody AddAccountDto dto) {
 		
-		//인사원장에 employeeID가 없는 사람의 계정을 검색하는 경우 error 떨어지도록 예외처리 필요
-		//각 인원당 한계정만 가질 수 있도록 걸러낼 필요 있음 --> 쿼리 한번 더 해야될 듯
 		loginService.addLogin(dto);
 		
 	}

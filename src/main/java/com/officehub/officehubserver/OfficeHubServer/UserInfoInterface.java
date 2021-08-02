@@ -1,7 +1,7 @@
 package com.officehub.officehubserver.OfficeHubServer;
 
-import com.officehub.officehubserver.OfficeHubServer.dto.UserInfo;
+import com.officehub.officehubserver.OfficeHubServer.dto.UserInfoDto;
 
 public interface UserInfoInterface {
-	UserInfo getUserInfo(int id) throws Exception;
+	UserInfoDto getUserInfo(int id) throws Exception;
 }
