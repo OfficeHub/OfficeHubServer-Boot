@@ -38,7 +38,7 @@ public class LoginService {
 		if(dto.getEmployeeId() != isEmployee){
 			loginMapper.addLogin(dto.getEmployeeId(), dto.getUserId(), dto.getPassword());
 		} else {
-			throw new IdNotFoundException();
+			throw new IdNotFoundException("employeeId is already.");
 		}
 		
 	}

@@ -4,6 +4,9 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.officehub.officehubserver.OfficeHubServer.repository.UserInfoMapper">
     <select id="getUserInfo" parameterType="int" resultType="userinfo">
-        select employee_id,name,department,phone_no,profile_url from employee where employee_id = #{id}
+        select employee_id,name,department,phone_no,profile_url from employee where employee_id = #{employee_id}
     </select>
+    <insert id="addUserInfo" parameterType="SignUp">
+    	insert into employee (email, name, department, phone_no, hire_date, job_title, position, gender, birth_date, profile_url) VALUES (#{email}, #{name}, #{department}, #{phone_no}, #{hire_date}, #{job_title}, #{position}, #{gender}, #{birth_date}, #{profile_url});
+    </insert>
 </mapper>
