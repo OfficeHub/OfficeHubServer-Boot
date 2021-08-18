@@ -2,22 +2,29 @@ package com.officehub.officehubserver.OfficeHubServer.dto;
 
 import org.apache.ibatis.type.Alias;
 
-@Alias("Login")
-public class LoginDto {
+@Alias("AddAccount")
+public class AddAccountDto {
 	
+	private int employee_Id;
 	private String user_Id;
 	private String password;
 	
-	public LoginDto() {
+	public AddAccountDto() {
 		
 	}
 	
-	public LoginDto(String user_Id, String password) {
-		this.user_Id = user_Id;
-		this.password = password;
+	public AddAccountDto(int employee_Id, String userId, String password){
+		this.employee_Id = employee_Id;
+		this.user_Id = userId;
+		this.password = password;		
 	}
 	
-
+	public int getEmployeeId() {
+		return employee_Id;
+	}
+	public void setEmployeeId(int employee_Id) {
+		this.employee_Id = employee_Id;
+	}
 	public String getUserId() {
 		return user_Id;
 	}

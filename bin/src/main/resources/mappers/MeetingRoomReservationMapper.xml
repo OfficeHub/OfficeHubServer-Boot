@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.officehub.officehubserver.OfficeHubServer.repository.MeetingRoomReservationMapper">
+    <select id="getAllReservationListByDate" parameterType="java.time.LocalDate" resultType="meetingRoomReservation">
+        select reservation_id, room_id, subscriber_id, start_hour, end_hour, reservation_date from meeting_room_reservation
+        where reservation_date = #{reservationDate} order by end_hour
+    </select>
+    <insert id="bookMeetingRoom" parameterType="postMeetingRoomReservation">
+        insert into meeting_room_reservation (room_id, subscriber_id, start_hour, end_hour, reservation_date)
+        values (#{roomId}, #{subscriberId}, #{startHour}, #{endHour}, #{reservationDate})
+    </insert>
+    <select id="checkReservationOverlap" parameterType="postMeetingRoomReservation" resultType="int">
+        <![CDATA[
+            select count(reservation_id) from meeting_room_reservation
+            where room_id = #{roomId} and reservation_date = #{reservationDate} and
+            ((start_hour >= #{startHour} and start_hour < #{endHour})
+            or (end_hour > #{startHour} and end_hour <= #{endHour})
+            or (start_hour <= #{startHour} and end_hour >= #{endHour}))
+        ]]>
+    </select>
+    <select id="getMeetingRoomReservationCountByEmployeeId" parameterType="int" resultType="int">
+        select count(reservation_id) from meeting_room_reservation where subscriber_id = #{subscriberId}
+    </select>
+    <select id="getMeetingRoomReservationListByEmployeeId" parameterType="int" resultType="meetingRoomReservation">
+        select reservation_id, room_id, subscriber_id, start_hour, end_hour, reservation_date from meeting_room_reservation
+        where subscriber_id = #{subscriberId} order by reservation_date, end_hour
+    </select>
+    <delete id="deleteMeetingRoomReservation" parameterType="int">
+        delete from meeting_room_reservation where reservation_id = #{reservationId}
+    </delete>
+    <select id="getMeetingRoomReservationByReservationId" parameterType="int" resultType="int">
+        select count(reservation_id) from meeting_room_reservation where reservation_id = #{reservationId}
+    </select>
+    <select id="getMeetingRoomCountById" parameterType="int" resultType="int">
+        select count(room_id) from meeting_room where room_id = #{roomId}
+    </select>
+    <select id="getEmployeeCountById" parameterType="int" resultType="int">
+        select count(employee_id) from employee where employee_id = #{subscriberId}
+    </select>
+</mapper>

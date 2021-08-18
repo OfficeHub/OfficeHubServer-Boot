@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.officehub.officehubserver.Authentication.CryptoAlgorithm;
+import com.officehub.officehubserver.OfficeHubServer.dto.AddAccountDto;
 import com.officehub.officehubserver.OfficeHubServer.dto.LoginDto;
 import com.officehub.officehubserver.OfficeHubServer.service.LoginService;
 
@@ -29,11 +30,11 @@ public class LoginController {
 	 * @return Boolean(로그인 성공 여부)
 	 */
 	
-	@Operation(summary = "userid와 password를 비교하여 로그인 성공 여부를 쿼리합니다.")
+	@Operation(summary = "user_id와 password를 비교하여 로그인 성공 여부를 쿼리합니다.")
 	@PostMapping(value = "/getlogin")
     public boolean LoginData(@RequestBody LoginDto dto) {
 		
-		matchUser = loginService.getLogin(dto.getUserId(), CryptoAlgorithm.getEncrypt_test(dto.getPassword()));
+		matchUser = loginService.getLogin(dto.getUserId(), dto.getPassword());
 		
 		if(matchUser == null) {
 			return false;
@@ -54,7 +55,7 @@ public class LoginController {
 	//로그인 계정 추가 API 작성
 	@Operation(summary = "회원가입 시, userid와 password 로그인 정보를 add합니다.")
 	@PostMapping(value = "/useradd")
-	public void Loginadd(@RequestBody LoginDto dto) {
+	public void Loginadd(@RequestBody AddAccountDto dto) {
 		
 		//인사원장에 employeeID가 없는 사람의 계정을 검색하는 경우 error 떨어지도록 예외처리 필요
 		//각 인원당 한계정만 가질 수 있도록 걸러낼 필요 있음 --> 쿼리 한번 더 해야될 듯
